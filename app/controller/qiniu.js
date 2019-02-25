@@ -27,11 +27,18 @@ class QiniuController extends Controller {
   }
 
   async index() {
+    let res = {};
     const { ctx } = this;
-    ctx.body = {
-      code: 200,
-      data: ctx.helper.$select('aa', { where: { id: 3 } }),
-    };
+    const data = await ctx.service.qiniu.getList().catch(() => {
+      console.log('哈哈哈哈哈哈哈哈');
+    });
+    if (data) {
+      res = {
+        code: 200,
+        data,
+      };
+    }
+    ctx.body = res;
   }
 }
 

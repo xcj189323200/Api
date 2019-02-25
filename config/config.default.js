@@ -22,21 +22,21 @@ module.exports = appInfo => {
       },
       domainWhiteList: [ '*' ],
     },
-    myql: {
+    mysql: {
       // 单数据库信息配置
       client: {
         // host
-        host: 'mysql.com',
+        host: '39.96.166.71',
         // 端口号
         port: '3306',
         // 用户名
-        user: 'test_user',
+        user: 'root',
         // 密码
-        password: 'root',
+        password: 'Aa123456-',
         // 数据库名
-        database: 'xuchangjian',
+        database: 'api',
       },
-      // 是否加载到 app 上，默认开启
+      // 是否加载到 app 上，默认
       app: true,
       // 是否加载到 agent 上，默认关闭
       agent: false,

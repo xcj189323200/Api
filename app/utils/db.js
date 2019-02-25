@@ -33,6 +33,7 @@ module.exports = {
    */
   async $select(table, { where, columns, orders, limit, offset }) {
     const { app } = this;
+    console.log(this, '---this');
     const _conf = this.$filterParams({ where, columns, orders, limit, offset });
     let res;
     return new Promise(async (reslove, reject) => {
