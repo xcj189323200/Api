@@ -1,27 +1,30 @@
 'use strict';
 const _ = require('lodash');
-// app/extend/helper.js
 module.exports = {
   /**
    * @description 创建数据
    * @date 2019-02-20
    * @param {String} table 要插入的表
    * @param {Object} param 要创建的参数
+   * @return {Promise} 返回
    */
-  async $create(table, param) {
-    console.log(this.app, 'this.app');
-    const res = await this.app.mysql.insert(table, param);
-    return new Promise((reslove, reject) => {
+  $create(table, param) {
+    return new Promise(async (reslove, reject) => {
+      const res = await this.mysql.insert(table, param).catch(err => {
+        reject(err);
+      });
       // 插入成功
       if (res.affectedRows === 1) {
-        reslove();
+        reslove(res);
       } else {
-        reject();
+        reject({
+          msg: '创建失败',
+        });
       }
     });
   },
   /**
-   * @description 创建数据
+   * @description 查询数据
    * @date 2019-02-20
    * @param {String} table 要查询的表
    * @param {Object} where  WHERE 条件
@@ -32,25 +35,23 @@ module.exports = {
    * @example this.helper.$select('user',{id:1},{where: { status: 'draft', author: [ 'author1', 'author2' ]},columns: [ 'author', 'title' ], orders: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],limit: 10,offset: 0,})
    */
   async $select(table, { where, columns, orders, limit, offset }) {
-    const { app } = this;
-    console.log(this, '---this');
     const _conf = this.$filterParams({ where, columns, orders, limit, offset });
     let res;
     return new Promise(async (reslove, reject) => {
       try {
         if (this.$isTempObject(_conf)) {
-          res = await app.mysql.select(table);
+          res = await this.mysql.select(table);
         } else {
-          res = await app.mysql.select(table, _conf);
+          res = await this.mysql.select(table, _conf);
         }
         reslove(res);
       } catch (e) {
-        reject();
+        reject(e);
       }
     });
   },
   /**
-   * @description 创建数据
+   * @description 创建通过id数据
    * @date 2019-02-20
    * @param {String} table 要查询的表
    * @param {Number} id  查询的Id
@@ -72,24 +73,27 @@ module.exports = {
    * @param {String} table 要查询的表
    * @param {Object} params  删除的条件 (如果 其中包含id 则会直接更新)
    * @param {Object} opt  删除的条件 (如果 params 不包含id 则需要传opt 更新)
+   * @return {Promise} 返回
    * @example this.helper.$delete('user',{id=1})
    */
-  async $update(table, params, opt) {
+  $update(table, params, opt) {
     const _params = this.$filterParams(params);
     let res;
-    if (this.$isTempObject(opt)) {
-      res = await this.app.mysql.update(table, _params);
-    } else {
-      res = await this.app.mysql.update(table, _params, {
-        where: opt,
-      });
-    }
-    return new Promise((reslove, reject) => {
+    return new Promise(async (reslove, reject) => {
+      if (this.$isTempObject(opt)) {
+        res = await this.mysql.update(table, _params);
+      } else {
+        res = await this.mysql.update(table, _params, {
+          where: opt,
+        });
+      }
       // 成功
       if (res.affectedRows === 1) {
         reslove();
       } else {
-        reject();
+        reject({
+          msg: '更新失败',
+        });
       }
     });
   },
@@ -101,7 +105,7 @@ module.exports = {
    * @example this.helper.$delete('user',{id=1})
    */
   async $delete(table, params) {
-    const res = await this.app.mysql.delete(table, params);
+    const res = await this.mysql.delete(table, params);
     return new Promise((reslove, reject) => {
       // 成功
       if (res.affectedRows === 1) {

@@ -27,12 +27,16 @@ class QiniuController extends Controller {
   }
 
   async index() {
-    let res = {};
+    let res;
     const { ctx } = this;
     const data = await ctx.service.qiniu.getList().catch(() => {
       console.log('哈哈哈哈哈哈哈哈');
+      res = {
+        code: 500,
+        msg: '查询失败',
+      };
     });
-    if (data) {
+    if (!res) {
       res = {
         code: 200,
         data,
