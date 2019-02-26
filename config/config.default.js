@@ -14,7 +14,7 @@ module.exports = appInfo => {
   const config = {
     // use for cookie sign key, should change to your own and keep security
     keys: appInfo.name + '_1550457773022_9542',
-    middleware: [],
+    middleware: [ 'errors' ],
     security: {
       csrf: {
         enable: false,
@@ -50,6 +50,9 @@ module.exports = appInfo => {
       AccessKey: 'mgojDrNBW3gjfJaUF26RuLLIHi1mTz50YL8GRrZF',
       SecretKey: 'rRGS5q8S9gKwdyhPuPhju3ZLTMpa4RXYiTzP6Ulw',
       Bucket: 'img-xcj',
+    },
+    lianjia: {
+      Authorization: 'MjAxNzAzMjRfYW5kcm9pZDo0NTEzNGQ1NmRkMTE0NDA4MTNhZGM4MTAzMGMzYzY3MWJlZjllMjQ3',
     },
   };
 

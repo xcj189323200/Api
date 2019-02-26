@@ -1,5 +1,6 @@
 'use strict';
 const CommonRoute = require('./routes/common');
+const HouseRoute = require('./routes/house');
 /**
  * @param {Egg.Application} app - egg application
  */
@@ -8,5 +9,5 @@ module.exports = app => {
   const _router = router.namespace('/api');
 
   CommonRoute(_router, app);
-  // _router.resources('qiniu', '/getToken', controller.qiniu);
+  HouseRoute(_router, app);
 };
