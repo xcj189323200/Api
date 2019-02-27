@@ -22,24 +22,13 @@ module.exports = appInfo => {
       },
       domainWhiteList: [ '*' ],
     },
-    mysql: {
-      // 单数据库信息配置
-      client: {
-        // host
-        host: '39.96.166.71',
-        // 端口号
-        port: '3306',
-        // 用户名
-        user: 'root',
-        // 密码
-        password: 'Aa123456-',
-        // 数据库名
-        database: 'api',
+    mongoose: {
+      url: 'mongodb://39.96.166.71:27017/api',
+      options: {
+        user: 'xuchangjian',
+        pass: 'xuchangjian1994',
+        auth: { authMechanism: 'SCRAM-SHA-1' },
       },
-      // 是否加载到 app 上，默认
-      app: true,
-      // 是否加载到 agent 上，默认关闭
-      agent: false,
     },
   };
 

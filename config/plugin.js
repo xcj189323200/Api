@@ -14,8 +14,12 @@ module.exports = {
     enable: true,
     package: 'egg-validate',
   },
-  mysql: {
+  mongoose: {
     enable: true,
-    package: 'egg-mysql',
+    package: 'egg-mongoose',
   },
+  // mysql: {
+  //   enable: true,
+  //   package: 'egg-mysql',
+  // },
 };
