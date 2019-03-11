@@ -24,6 +24,7 @@ module.exports = {
   counts(conditions, cb) {
     return this
       .count(conditions)
+      // .countDocuments(conditions)
       .exec(cb);
   },
   findByMulId(ids, cb) {
@@ -36,20 +37,20 @@ module.exports = {
       .find(conditions)
       .exec(cb);
   },
-  createInfo(doc, cb) {
+  insert(doc, cb) {
     return this
       .create(doc, cb);
   },
-  updateInfo(id, doc, cb) {
-    const conditions = { _id: id };
+  updateInfo(conditions, doc, cb) {
     const options = {};
     const update = { $set: doc };
     return this
       .update(conditions, update, options, cb);
   },
-  removeInfo(id, cb) {
+  deleteById(id, cb) {
+    console.log(id, '-+++');
     const conditions = { _id: id };
     return this
-      .remove(conditions, cb);
+      .deleteOne(conditions, cb);
   },
 };

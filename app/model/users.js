@@ -1,5 +1,5 @@
 'use strict';
-const BaseModel = require('./base-model.js');
+const BaseModel = require('../core/base_model.js');
 module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;

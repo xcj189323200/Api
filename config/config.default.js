@@ -1,7 +1,7 @@
 /* eslint valid-jsdoc: "off" */
 
 'use strict';
-
+const path = require('path');
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -28,6 +28,16 @@ module.exports = appInfo => {
         user: 'xuchangjian',
         pass: 'xuchangjian1994',
         auth: { authMechanism: 'SCRAM-SHA-1' },
+      },
+    },
+    bodyParser: {
+      jsonLimit: '1mb',
+      formLimit: '1mb',
+    },
+    customLogger: {
+      scheduleLogger: {
+        // consoleLevel: 'NONE',
+        // file: path.join(appInfo.root, 'logs/schedule', appInfo.name, 'update_house.log'),
       },
     },
   };
