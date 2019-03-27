@@ -8,7 +8,7 @@ module.exports = {
       .sort({ [sortType]: 'desc' })
       .exec(cb);
   },
-  fetchPage(skip, limit, cb, sortType = 'update_time', conditions = {}) {
+  fetchPage({ skip, limit, cb, sortType = 'update_time', conditions = {} }) {
     return this
       .find(conditions)
       .limit(limit)

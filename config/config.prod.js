@@ -6,3 +6,6 @@ exports.cluster = {
     hostname: '127.0.0.1',
   },
 };
+exports.logger = {
+  disableConsoleAfterReady: false,
+};

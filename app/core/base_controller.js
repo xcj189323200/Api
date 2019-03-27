@@ -3,8 +3,21 @@
 const { Controller } = require('egg');
 
 class BaseControllers extends Controller {
-  get user() {
-    return this.ctx.session.user;
+  get params() {
+    const { method, request, params, query } = this.ctx;
+    const _params = { ...params };
+
+    switch (method) {
+      case 'GET':
+        Object.assign(_params, query);
+        break;
+      default:
+        Object.assign(_params, request.body);
+        break;
+    }
+    this.ctx.logger.info('请求参数:', _params);
+
+    return _params;
   }
   get aa() {
     return '这是aa';
@@ -17,13 +30,8 @@ class BaseControllers extends Controller {
       msg,
     };
   }
-  deleteFail(msg = '删除失败,暂无数据') {
+  operatFail(msg = '操作失败') {
     this.ctx.throw(500, msg);
-    // this.ctx.body = {
-    //   code: 501,
-    //   data,
-    //   msg,
-    // };
   }
 
   notFound(msg) {

@@ -40,6 +40,10 @@ module.exports = appInfo => {
         // file: path.join(appInfo.root, 'logs/schedule', appInfo.name, 'update_house.log'),
       },
     },
+    logger: {
+      dir: path.join(appInfo.root, 'logs/', 'node-' + appInfo.name),
+      consoleLevel: 'DEBUG',
+    },
   };
 
   // add your user config here
@@ -51,7 +55,8 @@ module.exports = appInfo => {
       Bucket: 'img-xcj',
     },
     lianjia: {
-      Authorization: 'MjAxNzAzMjRfYW5kcm9pZDo0NTEzNGQ1NmRkMTE0NDA4MTNhZGM4MTAzMGMzYzY3MWJlZjllMjQ3',
+      Authorization:
+        'MjAxNzAzMjRfYW5kcm9pZDo0NTEzNGQ1NmRkMTE0NDA4MTNhZGM4MTAzMGMzYzY3MWJlZjllMjQ3',
     },
   };
 

@@ -1,22 +1,13 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const qiniu = require('qiniu');
+
 
 class QiniuController extends Controller {
   async getToken() {
-    const { ctx, config } = this;
-    const mac = new qiniu.auth.digest.Mac(config.qiniu.AccessKey, config.qiniu.SecretKey);
-    const config2 = new qiniu.conf.Config();
-    config2.zone = qiniu.zone.Zone_z0;
-    const options = {
-      scope: config.qiniu.Bucket,
-      deleteAfterDays: 1,
-      returnBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}',
-    };
+    const { ctx } = this;
 
-    const putPolicy = new qiniu.rs.PutPolicy(options);
-    const token = putPolicy.uploadToken(mac);
+    const token = ctx.service.qiniu.get_token();
 
     ctx.body = {
       code: 200,
@@ -28,10 +19,13 @@ class QiniuController extends Controller {
 
   async index() {
     const { ctx } = this;
-    const data = await ctx.service.qiniu.getList();
+    const resUrl = 'https://puui.qpic.cn/vcover_vt_pic/0/3oe086g3e8pvmm11526636789/220';
+    const key = '乳品1';
+
+    const path = await ctx.service.qiniu.fetch_resource(resUrl, key);
     ctx.body = {
       code: 200,
-      data,
+      data: path,
     };
   }
 }

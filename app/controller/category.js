@@ -4,23 +4,37 @@ const Controller = require('../core/base_controller');
 // const { Controller } = require('egg');
 
 const Rules = {
+  get_rules: {
+    skip: { type: 'number', required: false },
+    limit: { type: 'number', required: false },
+    sort: { type: 'object', required: false },
+    conditions: { type: 'object', required: false },
+  },
   create_rules: {
     name: { type: 'string', required: true },
     cover_img: { type: 'string', required: false },
     sefl_flag: { type: 'number', required: false },
   },
   id_rules: {
-    id: { type: 'string', min: 24, max: 24, required: true },
+    id: { type: 'string', required: true },
+  },
+  update_rules: {
+    name: { type: 'string', required: false },
+    parent_id: { type: 'string', required: false },
+    cover_img: { type: 'string', required: false },
+    sefl_flag: { type: 'number', required: false },
+    sort_order: { type: 'number', required: false },
   },
 };
 
 class CategoryController extends Controller {
   async index() {
-    const { ctx } = this;
-    // const {} = ctx.query;
-    // const params = {};
-    // console.log(ctx.query, '----params');
-    const data = await ctx.service.category.get_list();
+    const { ctx, params } = this;
+    console.log(params, '----params');
+
+    ctx.validate(Rules.get_rules, params);
+
+    const data = await ctx.service.category.get_list(params);
     ctx.body = {
       code: 200,
       msg: '请求成功',
@@ -49,22 +63,23 @@ class CategoryController extends Controller {
   }
   async destroy() {
     const { ctx } = this;
-    const { id } = ctx.request.body;
-    console.log(ctx.params, id, '=ctx.request.body');
-    ctx.validate(Rules.id_rules, ctx.request.body);
+    const { id } = ctx.params;
+
+    ctx.validate(Rules.id_rules, ctx.params);
+
     const data = await ctx.service.category.delete(id);
 
-    data ? this.success({ data }) : this.deleteFail();
+    data ? this.success(data) : this.operatFail('删除失败');
   }
   async update() {
-    const { ctx } = this;
-    const { id } = ctx.request.body;
-    console.log(ctx.params, '=====');
-    console.log(ctx.request.body, 'ctx.request.body=====');
-    // ctx.validate(Rules.id_rules, ctx.request.body);
-    const data = await ctx.service.category.update_categroy(id, ctx.request.body);
-
-    data ? this.success({ data }) : this.deleteFail();
+    const { ctx, params } = this;
+    // const { id } = params;
+    // 验证参数
+    ctx.validate(Object.assign(Rules.update_rules, Rules.id_rules), params);
+    // 更新数据 service
+    const data = await ctx.service.category.update_categroy(params);
+    // 返回结果
+    data ? this.success(data) : this.operatFail('更新失败');
   }
 }
 

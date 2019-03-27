@@ -1,6 +1,5 @@
 'use strict';
 
-const Service = require('egg').Service;
 const qiniu = require('qiniu');
 const config = new qiniu.conf.Config();
 const bucket = 'img-xcj';
@@ -8,27 +7,7 @@ const mac = new qiniu.auth.digest.Mac('mgojDrNBW3gjfJaUF26RuLLIHi1mTz50YL8GRrZF'
 config.zone = qiniu.zone.Zone_z0;
 const bucketManager = new qiniu.rs.BucketManager(mac, config);
 
-class QiniuService extends Service {
-  async getList() {
-    const { ctx } = this;
-    const data = await ctx.model.Users.fetch();
-    console.log(data, '=========');
-    // 假如 我们拿到用户 id 从数据库获取用户详细信息
-    return {
-      data,
-    };
-  }
-  async get_token() {
-    const options = {
-      scope: bucket,
-      deleteAfterDays: 1,
-      returnBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}',
-    };
-
-    const putPolicy = new qiniu.rs.PutPolicy(options);
-    const token = putPolicy.uploadToken(mac);
-    return token;
-  }
+module.exports = {
   async fetch_resource(url, key) {
     return new Promise((resolve, reject) => {
       bucketManager.fetch(url, bucket, key, function(err, respBody, respInfo) {
@@ -46,7 +25,5 @@ class QiniuService extends Service {
         }
       });
     });
-
-  }
-}
-module.exports = QiniuService;
+  },
+};
