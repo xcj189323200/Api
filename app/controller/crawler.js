@@ -13,12 +13,10 @@ class PublicController extends Controller {
     const qq_ata = await ctx.service.crawler.get_qq_video();
     const iqiyi_data = [];
     for (let i = 1; i <= 30; i++) {
-      (i => {
-        setTimeout(async () => {
-          console.log(i, '-----');
-          iqiyi_data.push(...await ctx.service.crawler.get_iqiyi_video(i));
-        }, 2000);
-      })(i);
+      setTimeout(async () => {
+        console.log(i, '-----');
+        iqiyi_data.push(...await ctx.service.crawler.get_iqiyi_video(i));
+      }, 2000);
     }
     const _data = [ ...qq_ata, ...iqiyi_data ];
 
