@@ -15,11 +15,17 @@ class PublicController extends Controller {
     };
   }
   async crawler() {
-    const { ctx, params } = this;
-    // 验证参数
-    ctx.validate(this.Rules.get_rules, params);
+    const { ctx } = this;
 
-    const _data = await ctx.service.crawler.get_iqiyi_video();
+    const qq_ata = await ctx.service.crawler.get_qq_video();
+    const iqiyi_data = [];
+    for (let i = 1; i <= 30; i++) {
+      setTimeout(async () => {
+        console.log(i, '-----');
+        iqiyi_data.push(...await ctx.service.crawler.get_iqiyi_video(i));
+      }, 2000);
+    }
+    const _data = [ ...qq_ata, ...iqiyi_data ];
 
     for (let i = 0; i < _data.length; i++) {
       await ctx.service.crawler.created_videos(_data[i]);
