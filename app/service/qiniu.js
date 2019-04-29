@@ -9,15 +9,6 @@ config.zone = qiniu.zone.Zone_z0;
 const bucketManager = new qiniu.rs.BucketManager(mac, config);
 
 class QiniuService extends Service {
-  async getList() {
-    const { ctx } = this;
-    const data = await ctx.model.Users.fetch();
-    console.log(data, '=========');
-    // 假如 我们拿到用户 id 从数据库获取用户详细信息
-    return {
-      data,
-    };
-  }
   async get_token() {
     const options = {
       scope: bucket,

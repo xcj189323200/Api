@@ -6,7 +6,7 @@ class BaseControllers extends Controller {
   get params() {
     const { method, request, params, query } = this.ctx;
     const _params = { ...params };
-
+    console.log(query, '---------query');
     switch (method) {
       case 'GET':
         Object.assign(_params, query);
